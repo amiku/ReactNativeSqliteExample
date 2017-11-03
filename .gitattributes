@@ -6,4 +6,4 @@
 *.h linguist-language = javascript
 *.m linguist-language = javascript
 *.java linguist-language = javascript
-* linguist-language = javascript
+*.json linguist-language = javascript
