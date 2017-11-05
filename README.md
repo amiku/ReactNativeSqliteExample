@@ -5,7 +5,7 @@
 ```
 This example shows how to use SQLite database with React Native, and how to create table structure, insert data and query data record via JavaScript language.
 
-This example has passed on Android platform, iOS not yet.
+This example has passed on Android platform, iOS not tested yet.
 
 ```
 
