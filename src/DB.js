@@ -18,7 +18,7 @@ export default class DB extends Component {
         DB.conn.transaction(function (tx) {
             // Create table
             tx.executeSql('CREATE TABLE IF NOT EXISTS article (id INTEGER PRIMARY KEY AUTOINCREMENT, title, content)', [], function () {
-                console.log("table article created");
+                // console.log("table article created");
             });
             // You can add or modify database structure below
             // ...
@@ -37,19 +37,28 @@ export default class DB extends Component {
                 if (successCallback && typeof(successCallback) === "function") {
                     successCallback(res);
                 }
+
             }, function (e) {
                 console.log("###ERROR: " + e.message);
                 if (failureCallback && typeof(failureCallback) === "function") {
                     failureCallback(e);
                 }
+
             });
         });
     };
 
+    /**
+     * close database
+     */
     closeDatabase = () => {
         if (DB.conn) {
             console.log("Closing database ...");
-            DB.conn.close().then((status) => {
+            let promise = new Promise(function (resolve, reject) {
+                resolve(DB.conn.close());
+            });
+            promise.then(() => {
+                console.log("Database Closed");
             }).catch((error) => {
                 this._errorCB(error);
             });
@@ -59,10 +68,6 @@ export default class DB extends Component {
 
     _errorCB = (err) => {
         console.log("SQL Error: " + err);
-    };
-
-    _successCB = () => {
-        console.log("SQL executed fine");
     };
 
     _openCB = () => {

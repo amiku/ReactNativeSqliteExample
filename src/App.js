@@ -8,15 +8,28 @@ import {
 import DB from './DB';
 
 export default class App extends Component {
+    db = null;
+
     constructor(props) {
         super(props);
         this._insertNewData = this._insertNewData.bind(this);
         this._queryRecordCount = this._queryRecordCount.bind(this);
     }
 
+    componentWillMount() {
+        this.db = new DB();
+    }
+
+    componentWillUnmount() {
+        this.db.closeDatabase();
+    }
+
+    /**
+     * test feature of inserting new data
+     * @private
+     */
     _insertNewData = () => {
-        let db = new DB();
-        db.query("insert into article(title, content) values('article title','article content')", function (results) {
+        this.db.query("insert into article(title, content) values('article title','article content')", function (results) {
             console.log(results);
             alert("###Insert new record " + results.insertId + " successfully !");
         }, function (e) {
@@ -24,11 +37,14 @@ export default class App extends Component {
         });
     };
 
+    /**
+     * test feature of query total records count
+     * @private
+     */
     _queryRecordCount = () => {
-        let db = new DB();
-        db.query("SELECT * from article", function (results) {
+        this.db.query("SELECT * from article", function (results) {
             console.log(results);
-            alert("Total record count is " + results.rows.length);
+            alert("Total records count is " + results.rows.length);
         }, function (e) {
             console.log("### Error Message:" + e.message);
         });
